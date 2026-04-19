@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
     "build": "npm install --prefix ./backend && npm install --prefix ./frontend && npm run build --prefix ./frontend",
     "start": "npm start --prefix ./backend"
   },
@@ -18,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/mohit718/CodeHouse/issues"
   },
-  "homepage": "https://github.com/mohit718/CodeHouse#readme"
+  "homepage": "https://github.com/mohit718/CodeHouse#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }
