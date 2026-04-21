@@ -19,7 +19,7 @@ const syncUserCreated = client.createFunction(
                 name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
                 profileImage: data.image_url || null,
             },
-            { upsert: true, new: true }
+            { upsert: true, returnDocument: "after" }
         );
 
         return { success: true };
