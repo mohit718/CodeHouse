@@ -9,15 +9,15 @@ const syncUserCreated = client.createFunction(
     async ({ event }) => {
         await connectDB();
 
-        const data = event.data;
+        const { id, email_addresses, first_name, last_name, image_url } = event.data;
 
         await User.findOneAndUpdate(
-            { clerkId: data.id },
+            { clerkId: id },
             {
-                clerkId: data.id,
-                email: data.email_addresses[0].email_address,
-                name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
-                profileImage: data.image_url || null,
+                clerkId: id,
+                email: email_addresses[0].email_address,
+                name: `${first_name || ''} ${last_name || ''}`.trim(),
+                profileImage: image_url || null,
             },
             { upsert: true, returnDocument: "after" }
         );
@@ -26,4 +26,17 @@ const syncUserCreated = client.createFunction(
     }
 );
 
-export const functions = [syncUserCreated]
+const syncUserDeleted = client.createFunction(
+    { id: "sync-user-deleted", triggers: [{ event: "clerk/user.deleted" }] },
+    async ({ event }) => {
+        await connectDB();
+
+        const { id } = event.data;
+
+        await User.deleteOne({ clerkId: id });
+
+        return { success: true };
+    }
+);
+
+export const functions = [syncUserCreated, syncUserDeleted]
