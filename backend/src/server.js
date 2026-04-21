@@ -1,14 +1,25 @@
 import express from 'express'
-import env from './libs/env.js'
+import cors from 'cors'
 import path from 'path'
+import { serve } from "inngest/express";
+import env from './libs/env.js'
 import { connectDB } from './libs/db.js'
+import { client, functions } from './libs/inngest.js'
 
 const app = express()
 
 const __project_root = path.join(path.resolve(), '../')
 
+// middlewares
+app.use(express.json());
+app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+app.use(
+    "/api/inngest",
+    serve({ client, functions })
+);
+
 app.get('/health', (req, res) => {
-    res.status(200).json({ message: 'API is up & running.', status: 200 });
+    res.status(200).json({ message: 'API is up & running.', status: 200, environment: env.NODE_ENV });
 })
 
 if (env.NODE_ENV === 'production') {
