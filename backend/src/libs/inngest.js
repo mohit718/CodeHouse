@@ -1,12 +1,11 @@
 import { Inngest } from "inngest";
+import { connectDB } from './db.js';
 import User from "../models/User.js";
 
-export const client = new Inngest({
-    id: "CodeHouse",
-});
+export const client = new Inngest({ id: "CodeHouse", });
 
 const syncUserCreated = client.createFunction(
-    { id: "sync-user-created", triggers: { event: "clerk/user.created" } },
+    { id: "sync-user-created", triggers: [{ event: "clerk/user.created" }] },
     async ({ event }) => {
         const data = event.data;
 
