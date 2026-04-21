@@ -8,16 +8,16 @@ const syncUserCreated = client.createFunction(
     { id: "sync-user-created", triggers: [{ event: "clerk/user.created" }] },
     async ({ event }) => {
         await connectDB();
-        
+
         const data = event.data;
 
         await User.findOneAndUpdate(
             { clerkId: data.id },
             {
                 clerkId: data.id,
-                email: data.email,
+                email: data.email_addresses[0].email_address,
                 name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
-                profileImage: data.imageUrl,
+                profileImage: data.image_url || null,
             },
             { upsert: true, new: true }
         );
