@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(
     "/api/inngest",
-    serve({ client, functions })
+    serve({ client: client, functions: functions })
 );
 
 app.get('/health', (req, res) => {

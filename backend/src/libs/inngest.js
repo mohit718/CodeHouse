@@ -7,6 +7,8 @@ export const client = new Inngest({ id: "CodeHouse", });
 const syncUserCreated = client.createFunction(
     { id: "sync-user-created", triggers: [{ event: "clerk/user.created" }] },
     async ({ event }) => {
+        await connectDB();
+        
         const data = event.data;
 
         await User.findOneAndUpdate(
