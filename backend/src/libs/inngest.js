@@ -31,6 +31,8 @@ const syncUserCreated = client.createFunction(
         })
 
         return { success: true };
+
+        // challenge: Email welcome email to user.
     }
 );
 
