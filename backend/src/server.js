@@ -6,8 +6,8 @@ import { clerkMiddleware } from '@clerk/express'
 import env from './libs/env.js'
 import { connectDB } from './libs/db.js'
 import { client, functions } from './libs/inngest.js'
-import { protectRoute } from './middlewares/protectRoute.js';
 import chatRoutes from './routes/chatRoutes.js';
+import sessionRoutes from './routes/sessionRoutes.js';
 
 const app = express()
 
@@ -19,12 +19,11 @@ app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware())
 app.use("/api/inngest", serve({ client: client, functions: functions }));
 app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 app.get('/health', (req, res) => {
     res.status(200).json({ message: 'API is up & running.', status: 200, environment: env.NODE_ENV });
 })
-
-
 
 if (env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__project_root, 'frontend', 'dist')))
@@ -47,4 +46,5 @@ const startServer = async () => {
 }
 
 startServer();
+
 

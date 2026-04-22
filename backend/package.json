@@ -13,9 +13,11 @@
   "type": "module",
   "dependencies": {
     "@clerk/express": "^2.1.5",
+    "@stream-io/node-sdk": "^0.7.55",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-list-endpoints": "^7.1.1",
     "inngest": "^4.2.4",
     "mongodb": "^7.1.1",
     "mongoose": "^9.4.1",
