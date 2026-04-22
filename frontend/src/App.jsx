@@ -1,17 +1,26 @@
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
+import { Routes, Route, Navigate } from 'react-router'
+import { Toaster } from 'react-hot-toast'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import { useUser } from '@clerk/react'
+import Navbar from './components/Navbar'
+import Homepage from './pages/Homepage'
+import Dashboard from './pages/Dashboard'
 
 function App() {
+  const { user, isSignedIn } = useUser()
   return <>
-    <h1>CodeHouse App</h1>
-    <header>
-      <Show when="signed-out">
-        <SignInButton mode='modal' />
-        <SignUpButton mode='modal' />
-      </Show>
-      <Show when="signed-in">
-        <UserButton />
-      </Show>
-    </header>
+    <Navbar />
+    <Routes>
+      <Route path='/' element={<Homepage />} />
+      <Route path='/dashboard' element={isSignedIn ? <Dashboard /> : <Navigate to="/" />} />
+    </Routes>
+    <Toaster position='top-right' toastOptions={{duration:3000}}/>
   </>
 }
 
