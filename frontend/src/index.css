@@ -3,3 +3,9 @@
 @plugin "daisyui" {
   themes: all;
 }
+
+@layer base {
+  main {
+    @apply max-w-7xl mx-auto p-4;
+  }
+}
