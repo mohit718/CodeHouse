@@ -1,27 +1,26 @@
-import { Routes, Route, Navigate } from 'react-router'
-import { Toaster } from 'react-hot-toast'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-import { useUser } from '@clerk/react'
+import { Show, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/react'
+import { Navigate, Route, Routes } from 'react-router'
 import Navbar from './components/Navbar'
-import Homepage from './pages/Homepage'
+import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
-  const { user, isSignedIn } = useUser()
-  return <>
+
+  const { user, isSignedIn, isLoaded } = useUser();
+
+  if (!isLoaded) return null;
+
+  return (<>
+
     <Navbar />
     <Routes>
-      <Route path='/' element={<Homepage />} />
-      <Route path='/dashboard' element={isSignedIn ? <Dashboard /> : <Navigate to="/" />} />
+      <Route path="/" element={!isSignedIn ? <Home /> : <Navigate to="/dashboard" />} />
+      <Route path="/dashboard" element={isSignedIn ? <Dashboard /> : <Navigate to="/" />} />
     </Routes>
-    <Toaster position='top-right' toastOptions={{duration:3000}}/>
+    <Toaster position='top-right' toastOptions={{duration: 3000}}/>
   </>
+  )
 }
 
 export default App
