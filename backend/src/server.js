@@ -19,7 +19,7 @@ app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware())
 app.use("/api/inngest", serve({ client: client, functions: functions }));
 app.use("/api/chat", chatRoutes);
-app.use("/api/sessions", sessionRoutes);
+app.use("/api/session", sessionRoutes);
 
 app.get('/health', (req, res) => {
     res.status(200).json({ message: 'API is up & running.', status: 200, environment: env.NODE_ENV });
