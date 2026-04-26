@@ -1,15 +1,12 @@
-import { Link } from "react-router";
+import { SignInButton } from '@clerk/react';
 import {
     ArrowRightIcon,
     CheckIcon,
     Code2Icon,
-    SparklesIcon,
     UsersIcon,
     VideoIcon,
-    ZapIcon,
+    ZapIcon
 } from "lucide-react";
-import { Show, SignInButton, UserButton } from '@clerk/react'
-import Navbar from "../components/Navbar";
 
 
 export default function Home() {

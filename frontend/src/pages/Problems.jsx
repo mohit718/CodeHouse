@@ -1,5 +1,5 @@
+import { ChevronRightIcon, Code2Icon } from 'lucide-react'
 import { Link } from 'react-router'
-import { Code2Icon, ChevronRightIcon } from 'lucide-react'
 import { PROBLEMS } from '../../../../ref/frontend/src/data/problems'
 import { getDifficultyBadgeClass } from "../libs/utils"
 
