@@ -1,8 +1,13 @@
 import Session from "../models/Session.js"
 import { chatClient, streamClient } from "../libs/stream.js"
+import Problem from '../models/Problem.js'
 
 export async function createSession(req, res) {
     try {
+        if(!req.body?.problemId){
+            return res.status(400).json({ error: 'BadRequest: ProblemId not found in request.' })
+        }
+
         const problemId = req.body.problemId
         const userId = req.user._id
         const clerkId = req.user.clerkId
@@ -23,11 +28,11 @@ export async function createSession(req, res) {
             }
         })
 
-        chatClient.channel('messaging', callId, {
+        await chatClient.channel('messaging', callId, {
             name: `Chat for session ${session._id}`,
             created_by_id: clerkId,
             members: [clerkId],
-        })
+        }).create()
 
         res.status(200).json({ session })
 

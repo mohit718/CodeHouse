@@ -1,3 +1,4 @@
+
 export function getDifficultyBadgeClass(difficulty) {
   switch (difficulty.toLowerCase()) {
     case "easy":
@@ -31,4 +32,16 @@ export const normalizeOutput = (output) => {
 
 export const checkCodeOutput = (expected, actual) => {
   return normalizeOutput(expected) === normalizeOutput(actual);
+};
+
+export const isUserInSession = (user, session) => {
+  if (
+    user &&
+    user.id &&
+    session &&
+    (session?.host?.clerkId === user.id ||
+      session?.participant?.clerkId === user.id)
+  )
+    return true;
+  return false;
 };

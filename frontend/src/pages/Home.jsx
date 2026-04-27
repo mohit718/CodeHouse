@@ -11,7 +11,7 @@ import {
 
 export default function Home() {
     return (
-        <div className="bg-gradient-to-br from-base-100 via-base-200 to-base-300">
+        <div className="bg-linear-to-br from-base-100 via-base-200 to-base-300">
             {/* HERO SECTION */}
             <div className="max-w-7xl mx-auto px-4 py-20">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -23,7 +23,7 @@ export default function Home() {
                         </div>
 
                         <h1 className="text-5xl lg:text-7xl font-black leading-tight">
-                            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                            <span className="bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Code Together,
                             </span>
                             <br />

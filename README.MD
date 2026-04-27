@@ -20,3 +20,6 @@
 ##Deployment
 > Github
 > Render
+
+## TODO: Update api return objects, from data:{sessions} to data:sessions, also for other endpoints
+## TODO: Allow multiple problem select and problem queue in session

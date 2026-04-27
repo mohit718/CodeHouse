@@ -1,11 +1,11 @@
 import { getDifficultyBadgeClass } from "../libs/utils";
+import { useProblem } from "../hooks/useProblem";
 
-export default function ProblemDescription({
-  problem,
-  currentProblemId,
-  onProblemChange,
-  allProblems,
-}) {
+export default function ProblemDescription({ problem, onProblemChange }) {
+  const { data: allProblems, isLoading } = useProblem();
+
+  if (!problem || isLoading) return null;
+
   return (
     <div className="h-full overflow-y-auto bg-base-200">
       {/* HEADER SECTION */}
@@ -26,11 +26,11 @@ export default function ProblemDescription({
         <div className="mt-4">
           <select
             className="select select-sm w-full"
-            value={currentProblemId}
+            value={problem._id}
             onChange={(e) => onProblemChange(e.target.value)}
           >
             {allProblems.map((p) => (
-              <option key={p.id} value={p.id}>
+              <option key={p._id} value={p._id}>
                 {p.title} - {p.difficulty}
               </option>
             ))}

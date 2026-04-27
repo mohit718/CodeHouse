@@ -4,40 +4,47 @@ import { toast } from "react-hot-toast";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { useNavigate, useParams } from "react-router";
 import { CodeEditor, OutputPanel, ProblemDescription } from "../components";
-import { PROBLEMS } from "../data/problems";
+import { LANGUAGE_CONFIG } from "../data/problems";
+import { useProblemById } from "../hooks/useProblem";
 import { executeCode } from "../libs/piston";
 import { checkCodeOutput } from "../libs/utils";
 
 export default function Problem() {
-  const { id } = useParams();
-
-  const [currentProblemId, setCurrentProblemId] = useState(id);
-  const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-  const [code, setCode] = useState(
-    PROBLEMS[currentProblemId].starterCode.javascript,
+  const [currentProblem, setCurrentProblem] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    Object.keys(LANGUAGE_CONFIG)[0],
   );
+  const [code, setCode] = useState("");
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
 
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { data: problem, isLoading } = useProblemById(id);
 
   // update problem when URL param changes
   useEffect(() => {
-    if (id && PROBLEMS[id]) {
-      setCurrentProblemId(id);
-      setCode(PROBLEMS[id].starterCode[selectedLanguage]);
+    if (!isLoading) {
+      setCurrentProblem(problem);
+      setCode(problem?.starterCode[selectedLanguage] || "");
       setOutput(null);
     }
-  }, [id, selectedLanguage]);
+  }, [problem]);
 
-  const currentProblem = PROBLEMS[currentProblemId];
+  if (isLoading) {
+    return null;
+  }
+
+  if (!problem) {
+    navigate("/problems");
+  }
 
   const handleProblemChange = (newProblemId) =>
     navigate(`/problem/${newProblemId}`);
 
   const handleLanguageChange = (newLanguage) => {
     setSelectedLanguage(newLanguage);
-    setCode(PROBLEMS[currentProblemId].starterCode[newLanguage]);
+    setCode(currentProblem?.starterCode?.[newLanguage] || "");
     setOutput(null);
   };
 
@@ -78,15 +85,13 @@ export default function Problem() {
           <Panel defaultSize={50} minSize={30}>
             <ProblemDescription
               problem={currentProblem}
-              currentProblemId={currentProblemId}
               onProblemChange={handleProblemChange}
-              allProblems={Object.values(PROBLEMS)}
             />
           </Panel>
           <Separator className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
           <Panel defaultSize={50} minSize={30}>
             <Group orientation="vertical" className="h-full">
-              <Panel defaultSize={'80vh'} minSize={'40vh'}>
+              <Panel defaultSize={"80vh"} minSize={"40vh"}>
                 <CodeEditor
                   code={code}
                   running={isRunning}
@@ -97,7 +102,7 @@ export default function Problem() {
                 />
               </Panel>
               <Separator className="h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
-              <Panel minSize={'10vh'}>
+              <Panel minSize={"10vh"}>
                 <OutputPanel output={output} />
               </Panel>
             </Group>

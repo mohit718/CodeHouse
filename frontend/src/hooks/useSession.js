@@ -1,40 +1,58 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createSession, getActiveSessions, getPastSessions, joinSession, endSession } from "../api/session";
+import {
+  createSession,
+  getActiveSessions,
+  getPastSessions,
+  joinSession,
+  endSession,
+} from "../api/session";
+import { toast } from "react-hot-toast";
 
-export const useCreateSession = (problemId) =>
+export const useCreateSession = () =>
   useMutation({
-    mutationKey: ["createSession", problemId],
-    mutationFn: () => createSession(problemId),
-    onSuccess: (data) => console.log('Session Created',data),
-    onError: (error) => console.error('Error creating session', error),
+    mutationKey: ["createSession"],
+    mutationFn: (problemId) => createSession(problemId),
+    onSuccess: (data) => toast.success("Session Created!"),
+    onError: (error) =>
+      toast.error(error.response?.data?.message || "Error creating session"),
   });
 
-export const useGetActiveSessions = () =>
+export const useActiveSessions = () =>
   useQuery({
     queryKey: ["activeSessions"],
     queryFn: getActiveSessions,
-    onSuccess: (data) => console.log('Active Sessions', data),
-    onError: (error) => console.error('Error fetching active sessions', error),
   });
 
-export const useGetPastSessions = () =>
+export const usePastSessions = () =>
   useQuery({
     queryKey: ["pastSessions"],
     queryFn: getPastSessions,
-    onSuccess: (data) => console.log('Past Sessions', data),
-    onError: (error) => console.error('Error fetching past sessions', error),
+  });
+
+export const useSessionById = (sessionId) =>
+  useQuery({
+    queryKey: ["session", sessionId],
+    queryFn: () => getSessionById(sessionId),
+    enabled: !!sessionId,
+    refetchInterval: 5000, // Refetch every 5 seconds for real-time updates
   });
 
 export const useJoinSession = (sessionId) =>
   useMutation({
     mutationKey: ["joinSession", sessionId],
     mutationFn: () => joinSession(sessionId),
+    enabled: !!sessionId,
+    onSuccess: (data) => toast.success("Joined Session!"),
+    onError: (error) =>
+      toast.error(error.response?.data?.message || "Error joining session"),
   });
 
 export const useEndSession = (sessionId) =>
   useMutation({
     mutationKey: ["endSession", sessionId],
     mutationFn: () => endSession(sessionId),
-    onSuccess: (data) => console.log('Session Ended', data),
-    onError: (error) => console.error('Error ending session', error),
+    enabled: !!sessionId,
+    onSuccess: (data) => toast.success("Session Ended!"),
+    onError: (error) =>
+      toast.error(error.response?.data?.message || "Error ending session"),
   });
