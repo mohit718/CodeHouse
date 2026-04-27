@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "seed": "node src/seed.js",
     "dev": "node --watch src/server.js",
     "start": "node src/server.js"
   },
