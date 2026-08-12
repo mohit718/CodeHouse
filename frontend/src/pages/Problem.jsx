@@ -39,8 +39,9 @@ export default function Problem() {
     navigate("/problems");
   }
 
-  const handleProblemChange = (newProblemId) =>
+  const handleProblemChange = (newProblemId) => {
     navigate(`/problem/${newProblemId}`);
+  };
 
   const handleLanguageChange = (newLanguage) => {
     setSelectedLanguage(newLanguage);

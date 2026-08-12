@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import Problem from './pages/Problem'
 import Problems from './pages/Problems'
+import Session from './pages/Session'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       <Route path="/dashboard" element={isSignedIn ? <Dashboard /> : <Navigate to="/" />} />
       <Route path="/problems" element={isSignedIn ? <Problems /> : <Navigate to="/" />} />
       <Route path="/problem/:id" element={isSignedIn ? <Problem /> : <Navigate to="/" />} />
+      <Route path="/session/:id" element={isSignedIn ? <Session /> : <Navigate to="/" />} />
     </Routes>
     <Toaster position='top-right' toastOptions={{duration: 3000}}/>
   </div>
