@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import App from './App.jsx'
 import './index.css'
+import AxiosInterceptor from './interceptors/AxiosInterceptor.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <AxiosInterceptor/>
           <App />
         </ClerkProvider>
       </BrowserRouter>

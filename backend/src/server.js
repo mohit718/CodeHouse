@@ -14,9 +14,14 @@ const app = express();
 
 const __project_root = path.join(path.resolve(), "../");
 
+const allowed_origins = env.CLIENT_URL ?? [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
+
 // middlewares
 app.use(express.json());
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: allowed_origins, credentials: true }));
 app.use(clerkMiddleware());
 app.use("/api/inngest", serve({ client: client, functions: functions }));
 app.use("/api/chat", chatRoutes);
@@ -24,13 +29,11 @@ app.use("/api/session", sessionRoutes);
 app.use("/api/problem", problemRoutes);
 
 app.get("/health", (req, res) => {
-  res
-    .status(200)
-    .json({
-      message: "API is up & running.",
-      status: 200,
-      environment: env.NODE_ENV,
-    });
+  res.status(200).json({
+    message: "API is up & running.",
+    status: 200,
+    environment: env.NODE_ENV,
+  });
 });
 
 if (env.NODE_ENV === "production") {

@@ -1,4 +1,5 @@
 import User from '../models/User.js'
+import mongoose from 'mongoose';
 
 export const protectRoute = [
     async (req, res, next) => {
@@ -11,10 +12,10 @@ export const protectRoute = [
 
             const user = await User.findOne({ clerkId });
             if (!user) {
-                // return res.redirect('/');
-                // return res.status(404).json({ error: 'UserNotFound' });
+                return res.redirect('/');
+                return res.status(404).json({ error: 'UserNotFound' });
             }
-
+            
             req.user = user;
             next();
         } catch (error) {
